@@ -29,9 +29,9 @@ END
 FUNCTION(main, INT, INT argc, CHAR PPOINTER argv) START
     // VARIABLE("ayyy", str, CHAR POINTER) LINETERM
     // CALL(puts, GET(str)) LINETERM
-    VARIABLE({.str = "Hello, World!"}, a, GET(testing)) LINETERM
-    CALL(puts, a.str) LINETERM
-    CALL(printf, "%c\n", a.str INDEX(3)) LINETERM
+    VARIABLE({FIELD_ACCESSOR_DOT str = "Hello, World!"}, a, GET(testing)) LINETERM
+    CALL(puts, a FIELD_ACCESSOR_DOT str) LINETERM
+    CALL(printf, "%c\n", a FIELD_ACCESSOR_DOT str INDEX(3)) LINETERM
     CALL(test) LINETERM
     IF(argc EQ 2) THEN
         CALL(puts, argv INDEX(1)) LINETERM

@@ -23,6 +23,7 @@
 #define CHAR char 
 #define FLOAT float 
 #define LONG long
+#define DOUBLE double
 #define VOID void
 #define POINTER *
 #define PPOINTER **
@@ -43,6 +44,10 @@
 #define AND &&
 #define ADD +
 #define SUB -
+#define MOD %
+#define DIV /
+#define FIELD_ACCESSOR_DOT .
+#define FIELD_ACCESSOR_ARROW ->
 #define BYE(x) CALL(exit, x)
 #define INDEX(x) [x]
 #define STRUCTURE(x) struct x
