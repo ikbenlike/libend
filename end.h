@@ -44,6 +44,7 @@
 #define ADD +
 #define SUB -
 #define BYE(x) CALL(exit, x)
+#define INDEX(x) [x]
 
 #define PRINT_DOC(x) IF(strcmp(x, "START") == 0){puts("Open new scope, '{'");} \
                    ELIF(strcmp(x, "THEN") == 0){puts("Open new scope after a conditional, '{'");} \
@@ -83,6 +84,7 @@
                    ELIF(strcmp(x, "ADD") == 0){puts("add, +");} \
                    ELIF(strcmp(x, "SUB") == 0){puts("substract, -");} \
                    ELIF(strcmp(x, "BYE") == 0){puts("BYE(x) == 'exit(x)'");} \
-                   ELIF(strcmp(x, "PRINT_DOC") == 0){puts("PRINT_DOC(x) print simple description");}
+                   ELIF(strcmp(x, "PRINT_DOC") == 0){puts("PRINT_DOC(x) print simple description");} \
+                   ELIF(strcmp(x, "INDEX") == 0){puts("INDEX(x) == '[x]'");}
 
 

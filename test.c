@@ -18,12 +18,13 @@ END
 
 
 FUNCTION(main, INT, INT argc, CHAR PPOINTER argv) START
-    COMMENT VARIABLE("ayyy", str, CHAR POINTER) LINETERM
-    COMMENT CALL(puts, GET(str)) LINETERM
+    // VARIABLE("ayyy", str, CHAR POINTER) LINETERM
+    // CALL(puts, GET(str)) LINETERM
     CALL(test) LINETERM
     IF(argc EQ 2) THEN
+        CALL(puts, argv INDEX(1)) LINETERM
         BYE(1) LINETERM
     END
-    PRINT_DOC("START");
+    PRINT_DOC("START") LINETERM
     RET 0 LINETERM
-END 
+END
