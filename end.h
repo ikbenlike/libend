@@ -83,5 +83,6 @@
                    ELIF(strcmp(x, "ADD") == 0){puts("add, +");} \
                    ELIF(strcmp(x, "SUB") == 0){puts("substract, -");} \
                    ELIF(strcmp(x, "BYE") == 0){puts("BYE(x) == 'exit(x)'");} \
+                   ELIF(strcmp(x, "PRINT_DOC") == 0){puts("PRINT_DOC(x) print simple description");}
 
 
