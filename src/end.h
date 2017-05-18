@@ -52,6 +52,10 @@
 #define INDEX(x) [x]
 #define STRUCTURE(x) struct x
 #define TYPEDEFINITION(x, y) typedef y x
+#define UNION(x) union x 
+#define ENTRYPOINT_MAIN(...) int main(int argc, char **argv){ __VA_ARGS__ }
+#define NEW(x, ...) __init__##x(calloc(1, sizeof(x)), __VA_ARGS__)
+#define MAKE_STRUCT_CLASS(x, y) x.__init__ = y
 
 #define PRINT_DOC(x) IF(strcmp(x, "START") == 0){puts("Open new scope, '{'");} \
                    ELIF(strcmp(x, "THEN") == 0){puts("Open new scope after a conditional, '{'");} \
@@ -79,7 +83,7 @@
                    ELIF(strcmp(x, "ELIF") == 0){puts("else if, ELIF(x) == 'else if(x)'");} \
                    ELIF(strcmp(x, "ELSE") == 0){puts("else");} \
                    ELIF(strcmp(x, "RET") == 0){puts("return");} \
-                   ELIF(strcmp(x, "COMMENT") == 0){puts("//, comment");} \
+                   ELIF(strcmp(x, "COMMENT") == 0){puts("[BROKEN]//, comment");} \
                    ELIF(strcmp(x, "BREAK") == 0){puts("break");} \
                    ELIF(strcmp(x, "CONT") == 0){puts("continue");} \
                    ELIF(strcmp(x, "ST") == 0){puts("smaller than, <");} \
