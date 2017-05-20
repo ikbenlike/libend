@@ -40,14 +40,17 @@
 #define LT >
 #define EQ ==
 #define NQ !=
+#define NEQ !=
 #define OR ||
 #define AND &&
 #define ADD +
 #define SUB -
 #define MOD %
 #define DIV /
-#define FIELD_ACCESSOR_DOT .
-#define FIELD_ACCESSOR_ARROW ->
+#define FIELD_ACCESSOR .
+#define FIELD_ACCESSOR_POINTER ->
+#define FAD .
+#define FAA ->
 #define BYE(x) CALL(exit, x)
 #define INDEX(x) [x]
 #define STRUCTURE(x) struct x
@@ -55,6 +58,7 @@
 #define UNION(x) union x 
 #define ENTRYPOINT_MAIN(...) int main(int argc, char **argv){ __VA_ARGS__ }
 #define NEW(x, ...) __init__##x(calloc(1, sizeof(x)), __VA_ARGS__)
+#define DELETE(x, y) __delete__##x(y)
 #define MAKE_STRUCT_CLASS(x, y) x.__init__ = y
 
 #define PRINT_DOC(x) IF(strcmp(x, "START") == 0){puts("Open new scope, '{'");} \

@@ -17,11 +17,22 @@ TYPEDEFINITION(testing, STRUCTURE(testing)) LINETERM
 
 
 FUNCTION(__init__testing, testing POINTER, testing POINTER a, CHAR POINTER str, INT n) START
-    SET(CALL(calloc, 1, CALL(strlen, str) + 1), a FIELD_ACCESSOR_ARROW str) LINETERM
-    CALL(strcpy, a FIELD_ACCESSOR_ARROW str, str) LINETERM
-    SET(n, a FIELD_ACCESSOR_ARROW data FIELD_ACCESSOR_DOT i) LINETERM
+    SET(CALL(calloc, 1, CALL(strlen, str) + 1), a FIELD_ACCESSOR_POINTER str) LINETERM
+    CALL(strcpy, a FIELD_ACCESSOR_POINTER str, str) LINETERM
+    SET(n, a FIELD_ACCESSOR_POINTER data FIELD_ACCESSOR i) LINETERM
     RET a LINETERM
-END 
+END
+
+
+
+FUNCTION(__delete__testing, VOID, testing POINTER a) START
+    IF(a NEQ NULL) THEN
+        IF(a FIELD_ACCESSOR_POINTER str NEQ NULL) THEN
+            CALL(free, a FIELD_ACCESSOR_POINTER str) LINETERM
+        END
+        CALL(free, a) LINETERM
+ENND
+
 
 
 FUNCTION(test, VOID) START 
@@ -34,7 +45,7 @@ FUNCTION(test, VOID) START
     SET("end", a) LINETERM
     CALL(puts, GET(a)) LINETERM
     RET LINETERM
-END 
+END
 
 
 
@@ -43,12 +54,12 @@ END
     // CALL(puts, GET(str)) LINETERM
     REGISTER_VARIABLE(a, GET(testing)) LINETERM
     SET(CALL(malloc, CALL(strlen, "ayyy") + 1), GET(a.str)) LINETERM
-    CALL(strcpy, GET(a FIELD_ACCESSOR_DOT str), "ayyy") LINETERM
+    CALL(strcpy, GET(a FIELD_ACCESSOR str), "ayyy") LINETERM
     //SET("ayyy", a.str) LINETERM
-    SET(10, GET(a FIELD_ACCESSOR_DOT data FIELD_ACCESSOR_DOT i)) LINETERM
-    CALL(puts, a FIELD_ACCESSOR_DOT str) LINETERM
-    CALL(printf, "%c\n", a FIELD_ACCESSOR_DOT str INDEX(3)) LINETERM
-    CALL(printf, "%i\n", a FIELD_ACCESSOR_DOT data FIELD_ACCESSOR_DOT i) LINETERM
+    SET(10, GET(a FIELD_ACCESSOR data FIELD_ACCESSOR i)) LINETERM
+    CALL(puts, a FIELD_ACCESSOR str) LINETERM
+    CALL(printf, "%c\n", a FIELD_ACCESSOR str INDEX(3)) LINETERM
+    CALL(printf, "%i\n", a FIELD_ACCESSOR data FIELD_ACCESSOR i) LINETERM
     CALL(test) LINETERM
     IF(argc EQ 2) THEN
         CALL(puts, argv INDEX(1)) LINETERM
@@ -62,17 +73,21 @@ ENTRYPOINT_MAIN(
     // REGISTER_VARIABLE(t, testing) LINETERM
     // MAKE_STRUCT_CLASS(t, &__init_testing__) LINETERM
     VARIABLE(NEW(testing, "ayyy", 10), t, testing POINTER) LINETERM
-    CALL(puts, t FIELD_ACCESSOR_ARROW str) LINETERM
-    CALL(printf, "%i\n", t FIELD_ACCESSOR_ARROW data FIELD_ACCESSOR_DOT i) LINETERM
+    CALL(puts, t FIELD_ACCESSOR_POINTER str) LINETERM
+    CALL(printf, "%i\n", t FIELD_ACCESSOR_POINTER data FIELD_ACCESSOR i) LINETERM
+    DELETE(testing, t) LINETERM
     REGISTER_VARIABLE(a, GET(testing)) LINETERM
     SET(CALL(malloc, CALL(strlen, "ayyy") + 1), GET(a.str)) LINETERM
-    CALL(strcpy, GET(a FIELD_ACCESSOR_DOT str), "ayyy") LINETERM
+    CALL(strcpy, GET(a FIELD_ACCESSOR str), "ayyy") LINETERM
     //SET("ayyy", a.str) LINETERM
-    SET(10, GET(a FIELD_ACCESSOR_DOT data FIELD_ACCESSOR_DOT i)) LINETERM
-    CALL(puts, a FIELD_ACCESSOR_DOT str) LINETERM
-    CALL(printf, "%c\n", a FIELD_ACCESSOR_DOT str INDEX(3)) LINETERM
-    CALL(printf, "%i\n", a FIELD_ACCESSOR_DOT data FIELD_ACCESSOR_DOT i) LINETERM
+    SET(10, GET(a FIELD_ACCESSOR data FIELD_ACCESSOR i)) LINETERM
+    CALL(puts, a FIELD_ACCESSOR str) LINETERM
+    CALL(printf, "%c\n", a FIELD_ACCESSOR str INDEX(3)) LINETERM
+    CALL(printf, "%i\n", a FIELD_ACCESSOR data FIELD_ACCESSOR i) LINETERM
     CALL(test) LINETERM
+    IF(a FIELD_ACCESSOR str NQ NULL) THEN
+        CALL(free, a FIELD_ACCESSOR str) LINETERM
+    END
     IF(argc EQ 2) THEN
         CALL(puts, argv INDEX(1)) LINETERM
         BYE(1) LINETERM
