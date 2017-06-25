@@ -76,6 +76,48 @@ FUNCTION(loopdyloop, VOID) START
         END
         CALL(printf, "%d\n", POST_INCR(GET(i))) LINETERM
     END) LINETERM
+
+        LOOP_WHILE(i < 10, la, {
+        i++;
+        printf("%d\n", i);
+        BRK_LP(while, la);
+    });
+    puts("for");
+    LOOP_FOR(int i = 0, i < 10, i++, lf, {
+        printf("%d\n", i);
+        BRK_LP(for, lf);
+    });
+    int x[] = {1, 2, 3, 4};
+    puts("foreach");
+    LOOP_FOREACH(x, int, 4, lfe, {
+        printf("%d at index %d\n", __lfe_value__, __lfe_index__);
+        BRK_LP(foreach, lfe);
+    });
+    i = 10;
+    bool first = true;
+    puts("do while");
+    LOOP_DOWHILE(i < 10, ldw, {
+        if(first){
+            printf("%d\n", i);
+            i -= 10;
+            first = false;
+        }
+        if(3 == 4){
+            BRK_LP(dowhile, ldw);
+        }
+        printf("%d\n", i++);
+    });
+    int index = 0;
+    LOOP_UNTIL(x, 3, sizeof(x), index, lu, {
+        printf("index %d\n", __lwh_index__);
+        if(3 == 4){
+            BRK_LP(until, lu);
+        }
+    });
+    printf("found value %d at index %d\n", x[index], index);
+    LOOP_FOR(int i = 0, i < 3, i++, lf2, {
+        puts("this is a test");
+    });
 END
 
 ENTRYPOINT_MAIN(

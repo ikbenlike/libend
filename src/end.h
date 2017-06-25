@@ -70,13 +70,13 @@ typedef enum BOOL {
 #define NEW(x, ...) __init__##x(calloc(1, sizeof(x)), __VA_ARGS__)
 #define DELETE(x, y) __delete__##x(y)
 #define MAKE_STRUCT_CLASS(x, y) x.__init__ = y
-#define LOOP_WHILE(expr, ...) {__loop_check_cont__while:; __while_check__:; if(expr){goto __while_start__;}else{goto __while_end__;} __while_start__:; __VA_ARGS__ goto __while_check__; __while_end__:; __loop_end_brk__while:;}
-#define LOOP_FOR(def, expr, opr, ...) {def; __loop_check_cont__for:; __for_check__:; if(expr){goto __for_start__;}else{goto __for_end__;} __for_start__:; __VA_ARGS__; opr; goto __for_check__; __for_end__:; __loop_end_brk__for:;}
-#define LOOP_FOREACH(array, type, size, ...) {int __lfe_index__ = 0; __loop_check_cont__foreach:; __lfe_check__:; type __lfe_value__ = array[__lfe_index__]; if(__lfe_index__ < size){goto __lfe_start__;}else{goto __lfe_end__;} __lfe_start__:; __VA_ARGS__; __lfe_index__++; goto __lfe_check__; __lfe_end__:; __loop_end_brk__foreach:;}
-#define LOOP_DOWHILE(expr, ...) {__VA_ARGS__; __loop_check_cont__dowhile:; __dowhile_check__:; if(expr){goto __dowhile_start__;}else{goto __dowhile_end__;} __dowhile_start__:; __VA_ARGS__; goto __dowhile_check__; __dowhile_end__:; __loop_end_brk__dowhile:;}
-#define LOOP_UNTIL(array, item, size, ret, ...) {int __lwh_index__ = -1; __loop_check_cont__until:; __lwh_check__:; if(item != array[++__lwh_index__]){goto __lwh_start__;}else{ret = __lwh_index__; goto __lwh_end__;} if(__lwh_index__ == size && array[__lwh_index__] != item){__lwh_index__ = 0; ret = -1; goto __lwh_end__;}__lwh_start__:; __VA_ARGS__; goto __lwh_check__; __lwh_end__:; __loop_end_brk__until:;}
-#define CONT_LP(x) goto __loop_check_cont__##x
-#define BRK_LP(x) goto __loop_end_brk__##x
+#define LOOP_WHILE(expr, name, ...) {__loop_check_cont__while_##name:; __while_check__##name:; if(expr){goto __while_start__##name;}else{goto __while_end__##name;} __while_start__##name:; __VA_ARGS__ goto __while_check__##name; __while_end__##name:; __loop_end_brk__while_##name:;}
+#define LOOP_FOR(def, expr, opr, name, ...) {def; __loop_check_cont__for##name:; __for_check__##name:; if(expr){goto __for_start__##name;}else{goto __for_end__##name;} __for_start__##name:; __VA_ARGS__; opr; goto __for_check__##name; __for_end__##name:; __loop_end_brk__for_##name:;}
+#define LOOP_FOREACH(array, type, size, name, ...) {int __lfe_index__ = 0; __loop_check_cont__foreach_##name:; __lfe_check__##name:; type __lfe_value__ = array[__lfe_index__]; if(__lfe_index__ < size){goto __lfe_start__##name;}else{goto __lfe_end__##name;} __lfe_start__##name:; __VA_ARGS__; __lfe_index__++; goto __lfe_check__##name; __lfe_end__##name:; __loop_end_brk__foreach_##name:;}
+#define LOOP_DOWHILE(expr, name, ...) {__VA_ARGS__; __loop_check_cont__dowhile_##name:; __dowhile_check__##name:; if(expr){goto __dowhile_start__##name;}else{goto __dowhile_end__##name;} __dowhile_start__##name:; __VA_ARGS__; goto __dowhile_check__##name; __dowhile_end__##name:; __loop_end_brk__dowhile_##name:;}
+#define LOOP_UNTIL(array, item, size, ret, name, ...) {int __lwh_index__ = -1; __loop_check_cont__until_##name:; __lwh_check__##name:; if(item != array[++__lwh_index__]){goto __lwh_start__##name;}else{ret = __lwh_index__; goto __lwh_end__##name;} if(__lwh_index__ == size && array[__lwh_index__] != item){__lwh_index__ = 0; ret = -1; goto __lwh_end__##name;}__lwh_start__##name:; __VA_ARGS__; goto __lwh_check__##name; __lwh_end__##name:; __loop_end_brk__until_##name:;}
+#define CONT_LP(lt, name) goto __loop_check_cont__## lt _ ##name
+#define BRK_LP(lt, name) goto __loop_end_brk__##lt ## _ ##name
 
 #define PRINT_DOC(x) IF(strcmp(x, "START") == 0){puts("Open new scope, '{'");} \
                    ELIF(strcmp(x, "THEN") == 0){puts("Open new scope after a conditional, '{'");} \
