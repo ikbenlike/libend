@@ -49,25 +49,34 @@ END
 
 
 
-/*FUNCTION(main, INT, INT argc, CHAR PPOINTER argv) START
-    // VARIABLE("ayyy", str, CHAR POINTER) LINETERM
-    // CALL(puts, GET(str)) LINETERM
-    REGISTER_VARIABLE(a, GET(testing)) LINETERM
-    SET(CALL(malloc, CALL(strlen, "ayyy") + 1), GET(a.str)) LINETERM
-    CALL(strcpy, GET(a FIELD_ACCESSOR str), "ayyy") LINETERM
-    //SET("ayyy", a.str) LINETERM
-    SET(10, GET(a FIELD_ACCESSOR data FIELD_ACCESSOR i)) LINETERM
-    CALL(puts, a FIELD_ACCESSOR str) LINETERM
-    CALL(printf, "%c\n", a FIELD_ACCESSOR str INDEX(3)) LINETERM
-    CALL(printf, "%i\n", a FIELD_ACCESSOR data FIELD_ACCESSOR i) LINETERM
-    CALL(test) LINETERM
-    IF(argc EQ 2) THEN
-        CALL(puts, argv INDEX(1)) LINETERM
-        BYE(1) LINETERM
-    END
-    PRINT_DOC("START") LINETERM
-    RET 0 LINETERM
-END*/
+FUNCTION(loopdyloop, VOID) START
+    CALL(puts, "while") LINETERM
+    VARIABLE(0, i, INT) LINETERM
+    LOOP_WHILE(i ST 10, THEN
+        POST_INCR(GET(i)) LINETERM
+        CALL(printf, "%d\n", GET(i)) LINETERM
+    END) LINETERM
+    CALL(puts, "for") LINETERM
+    LOOP_FOR(INT i = 0, i < 10, i++, THEN
+        CALL(printf, "%d\n", GET(i)) LINETERM
+    END) LINETERM
+    MAKE_NEW_ARRAY(x, INT, START 1, 2, 3, 4 END) LINETERM 
+    CALL(puts, "foreach") LINETERM
+    LOOP_FOREACH(GET(x), INT, 4, THEN
+        CALL(printf, "%d at index %d\n", GET(__lfe_value__), GET(__lfe_index__)) LINETERM
+    END) LINETERM
+    SET(10, i) LINETERM
+    VARIABLE(TRUE, first, BOOL) LINETERM
+    CALL(puts, "do while") LINETERM
+    LOOP_DOWHILE(i < 10, THEN
+        WHEN(first) THEN
+            CALL(printf, "%d\n", GET(i)) LINETERM
+            i -= 10 LINETERM
+            SET(FALSE, first) LINETERM
+        END
+        CALL(printf, "%d\n", POST_INCR(GET(i))) LINETERM
+    END) LINETERM
+END
 
 ENTRYPOINT_MAIN(
     // REGISTER_VARIABLE(t, testing) LINETERM
@@ -92,6 +101,7 @@ ENTRYPOINT_MAIN(
         CALL(puts, argv INDEX(1)) LINETERM
         BYE(1) LINETERM
     END
+    CALL(loopdyloop) LINETERM
     PRINT_DOC("START") LINETERM
     RET 0 LINETERM
 )

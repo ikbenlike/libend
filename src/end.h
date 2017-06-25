@@ -4,6 +4,10 @@
     #include <string.h>
 #endif
 
+typedef enum BOOL {
+      FALSE,
+      TRUE
+} BOOL;
 
 #define START {
 #define THEN {
@@ -16,9 +20,13 @@
 #define FUNCTION(x, y, ...) y x(__VA_ARGS__)
 #define CALL(x, ...) x(__VA_ARGS__)
 #define VARIABLE(x, y, z) z y = x
+#define MAKE_NEW_ARRAY(x, y, ...) y x[] = __VA_ARGS__
 #define REGISTER_VARIABLE(x, y) y x
 #define SET(x, y) y = x
+#define SET_ARRAY(x, ...) x = __VA_ARGS__
 #define GET(x) x
+#define POST_INCR(x) x++
+#define PRE_INCR(x) ++x
 #define INT int 
 #define CHAR char 
 #define FLOAT float 
@@ -30,6 +38,8 @@
 #define PPPOINTER ***
 #define LINETERM ;
 #define IF(x) if(x)
+#define WHEN(x) IF(x)
+#define WHEN_NOT(x) if(!(x))
 #define ELIF(x) else if(x) 
 #define ELSE else 
 #define RET return
@@ -60,6 +70,13 @@
 #define NEW(x, ...) __init__##x(calloc(1, sizeof(x)), __VA_ARGS__)
 #define DELETE(x, y) __delete__##x(y)
 #define MAKE_STRUCT_CLASS(x, y) x.__init__ = y
+#define LOOP_WHILE(expr, ...) {__loop_check_cont__while:; __while_check__:; if(expr){goto __while_start__;}else{goto __while_end__;} __while_start__:; __VA_ARGS__ goto __while_check__; __while_end__:; __loop_end_brk__while:;}
+#define LOOP_FOR(def, expr, opr, ...) {def; __loop_check_cont__for:; __for_check__:; if(expr){goto __for_start__;}else{goto __for_end__;} __for_start__:; __VA_ARGS__; opr; goto __for_check__; __for_end__:; __loop_end_brk__for:;}
+#define LOOP_FOREACH(array, type, size, ...) {int __lfe_index__ = 0; __loop_check_cont__foreach:; __lfe_check__:; type __lfe_value__ = array[__lfe_index__]; if(__lfe_index__ < size){goto __lfe_start__;}else{goto __lfe_end__;} __lfe_start__:; __VA_ARGS__; __lfe_index__++; goto __lfe_check__; __lfe_end__:; __loop_end_brk__foreach:;}
+#define LOOP_DOWHILE(expr, ...) {__VA_ARGS__; __loop_check_cont__dowhile:; __dowhile_check__:; if(expr){goto __dowhile_start__;}else{goto __dowhile_end__;} __dowhile_start__:; __VA_ARGS__; goto __dowhile_check__; __dowhile_end__:; __loop_end_brk__dowhile:;}
+#define LOOP_UNTIL(array, item, size, ret, ...) {int __lwh_index__ = -1; __loop_check_cont__until:; __lwh_check__:; if(item != array[++__lwh_index__]){goto __lwh_start__;}else{ret = __lwh_index__; goto __lwh_end__;} if(__lwh_index__ == size && array[__lwh_index__] != item){__lwh_index__ = 0; ret = -1; goto __lwh_end__;}__lwh_start__:; __VA_ARGS__; goto __lwh_check__; __lwh_end__:; __loop_end_brk__until:;}
+#define CONT_LP(x) goto __loop_check_cont__##x
+#define BRK_LP(x) goto __loop_end_brk__##x
 
 #define PRINT_DOC(x) IF(strcmp(x, "START") == 0){puts("Open new scope, '{'");} \
                    ELIF(strcmp(x, "THEN") == 0){puts("Open new scope after a conditional, '{'");} \
